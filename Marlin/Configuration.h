@@ -1,8 +1,10 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-// This configurtion file contains the basic settings.
-// Advanced settings can be found in Configuration_adv.h 
+#include "boards.h"
+
+// This configuration file contains the basic settings.
+// Advanced settings can be found in Configuration_adv.h
 // BASIC SETTINGS: select your board type, temperature sensor type, axis scaling, and endstop configuration
 
 //User specified version info of this build to display in [Pronterface, etc] terminal window during startup.
@@ -46,8 +48,18 @@
 // 301 = Rambo
 
 #ifndef MOTHERBOARD
-#define MOTHERBOARD 33
+  #define MOTHERBOARD BOARD_RAMPS_13_EFB
 #endif
+
+// Define this to set a custom name for your generic Mendel,
+#define CUSTOM_MENDEL_NAME "Sonny i3"
+
+// Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
+// You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
+// #define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
+
+// This defines the number of extruders
+#define EXTRUDERS 1
 
 //// The following define selects which power supply you have. Please choose the one that matches your setup
 // 1 = ATX
@@ -276,7 +288,7 @@ your extruder heater takes 2 minutes to hit the target on heating.
 //  #define ENDSTOPPULLUP_ZMAX
   #define ENDSTOPPULLUP_XMIN
   #define ENDSTOPPULLUP_YMIN
-//  #define ENDSTOPPULLUP_ZMIN
+  #define ENDSTOPPULLUP_ZMIN
 #endif
 
 // The pullups are needed if you directly connect a mechanical endswitch between the signal and ground pins.
@@ -286,12 +298,12 @@ const bool Z_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 const bool X_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
 const bool Y_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
 const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
-#define DISABLE_MAX_ENDSTOPS
+//#define DISABLE_MAX_ENDSTOPS
 //#define DISABLE_MIN_ENDSTOPS
 
 // Disable max endstops for compatibility with endstop checking routine
 #if defined(COREXY) && !defined(DISABLE_MAX_ENDSTOPS)
-  //#define DISABLE_MAX_ENDSTOPS
+  #define DISABLE_MAX_ENDSTOPS
 #endif
 
 // For Inverting Stepper Enable Pins (Active Low) use 0, Non Inverting (Active High) use 1
@@ -665,15 +677,30 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 //  #define NEWPANEL  //enable this if you have a click-encoder panel
   #define SDSUPPORT
   #define ULTRA_LCD
-  #define LCD_WIDTH 20
-  #define LCD_HEIGHT 4
-  
-#else //no panel but just lcd 
+  #ifdef DOGLCD // Change number of lines to match the DOG graphic display
+    #define LCD_WIDTH 20
+    #define LCD_HEIGHT 5
+  #else
+    #define LCD_WIDTH 20
+    #define LCD_HEIGHT 4
+  #endif
+#else //no panel but just LCD
   #ifdef ULTRA_LCD
+  #ifdef DOGLCD // Change number of lines to match the 128x64 graphics display
+    #define LCD_WIDTH 20
+    #define LCD_HEIGHT 5
+  #else
     #define LCD_WIDTH 16
     #define LCD_HEIGHT 2    
   #endif
   #endif
+#endif
+
+// default LCD contrast for dogm-like LCD displays
+#ifdef DOGLCD
+# ifndef DEFAULT_LCD_CONTRAST
+#  define DEFAULT_LCD_CONTRAST 32
+# endif
 #endif
 
 // Increase the FAN pwm frequency. Removes the PWM noise but increases heating in the FET/Arduino
