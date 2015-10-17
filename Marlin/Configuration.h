@@ -7,11 +7,28 @@
 // Advanced settings can be found in Configuration_adv.h
 // BASIC SETTINGS: select your board type, temperature sensor type, axis scaling, and endstop configuration
 
-//User specified version info of this build to display in [Pronterface, etc] terminal window during startup.
-//Implementation of an idea by Prof Braino to inform user that any changes made
-//to this build by the user have been successfully uploaded into firmware.
-#define STRING_VERSION_CONFIG_H __DATE__ "  5-20-15 " __TIME__ // build date and time
-#define STRING_CONFIG_H_AUTHOR "(SONNY i3 Prusa Config)" //Who made the changes.
+//===========================================================================
+//============================= DELTA Printer ===============================
+//===========================================================================
+// For a Delta printer replace the configuration files with the files in the
+// example_configurations/delta directory.
+//
+
+//===========================================================================
+//============================= SCARA Printer ===============================
+//===========================================================================
+// For a Delta printer replace the configuration files with the files in the
+// example_configurations/SCARA directory.
+//
+
+// User-specified version info of this build to display in [Pronterface, etc] terminal window during
+// startup. Implementation of an idea by Prof Braino to inform user that any changes made to this
+// build by the user have been successfully uploaded into firmware.
+
+//#define STRING_VERSION "1.0.2"
+
+#define STRING_VERSION_CONFIG_H __DATE__ " " __TIME__ // build date and time
+#define STRING_CONFIG_H_AUTHOR "(FOLGER TECH, 8 i3 Prusa Config)" //Who made the changes.
 
 // SERIAL_PORT selects which serial port should be used for communication with the host.
 // This allows the connection of wireless adapters (for instance) to non-default port pins.
@@ -20,39 +37,18 @@
 
 // This determines the communication speed of the printer
 #define BAUDRATE 250000
-//#define BAUDRATE 115200
 
-//// The following define selects which electronics board you have. Please choose the one that matches your setup
-// 10 = Gen7 custom (Alfons3 Version) "https://github.com/Alfons3/Generation_7_Electronics"
-// 11 = Gen7 v1.1, v1.2 = 11
-// 12 = Gen7 v1.3
-// 13 = Gen7 v1.4
-// 3  = MEGA/RAMPS up to 1.2 = 3
-// 33 = RAMPS 1.3 (Power outputs: Extruder, Bed, Fan)
-// 34 = RAMPS 1.3 (Power outputs: Extruder0, Extruder1, Bed)
-// 4  = Duemilanove w/ ATMega328P pin assignment
-// 5  = Gen6
-// 51 = Gen6 deluxe
-// 6  = Sanguinololu < 1.2
-// 62 = Sanguinololu 1.2 and above
-// 63 = Melzi
-// 7  = Ultimaker
-// 71 = Ultimaker (Older electronics. Pre 1.5.4. This is rare)
-// 8  = Teensylu
-// 81 = Printrboard (AT90USB1286)
-// 82 = Brainwave (AT90USB646)
-// 9  = Gen3+
-// 70 = Megatronics
-// 90 = Alpha OMCA board
-// 91 = Final OMCA board
-// 301 = Rambo
+// This enables the serial port associated to the Bluetooth interface
+//#define BTENABLED              // Enable BT interface on AT90USB devices
 
+// The following define selects which electronics board you have.
+// Please choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
   #define MOTHERBOARD BOARD_RAMPS_13_EFB
 #endif
 
 // Define this to set a custom name for your generic Mendel,
-#define CUSTOM_MENDEL_NAME "Sonny i3"
+#define CUSTOM_MENDEL_NAME "Sonny's i3"
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
@@ -66,6 +62,9 @@
 // 2 = X-Box 360 203Watts (the blue wire connected to PS_ON and the red wire to VCC)
 
 #define POWER_SUPPLY 1
+
+// Define this to have the electronics keep the power supply off on startup. If you don't know what this is leave it.
+// #define PS_DEFAULT_OFF
 
 //===========================================================================
 //=============================Thermal Settings  ============================
@@ -90,7 +89,7 @@
 // 10 is 100k RS thermistor 198-961 (4.7k pullup)
 // 11 is 100k beta 3950 1% thermistor (4.7k pullup)
 // 12 is 100k 0603 SMD Vishay NTCS0603E3104FXT (4.7k pullup) (calibrated for Makibox hot bed)
-// 13 is 100k Hisens 3950  1% up to 300Â°C for hotend "Simple ONE " & "Hotend "All In ONE" 
+// 13 is 100k Hisens 3950  1% up to 300°C for hotend "Simple ONE " & "Hotend "All In ONE" 
 // 20 is the PT100 circuit found in the Ultimainboard V2.x
 // 60 is 100k Maker's Tool Works Kapton Bed Thermistor beta=3950
 //
@@ -109,6 +108,10 @@
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_BED 6
+
+// This makes temp sensor 1 a redundant sensor for sensor 0. If the temperatures difference between these sensors is to high the print will be aborted.
+//#define TEMP_SENSOR_1_AS_REDUNDANT
+#define MAX_REDUNDANT_TEMP_SENSOR_DIFF 10
 
 // Actual temperature must be close to target for this long before M109 returns success
 #define TEMP_RESIDENCY_TIME 10  // (seconds)
@@ -156,15 +159,10 @@
   #define PID_dT ((OVERSAMPLENR * 10.0)/(F_CPU / 64.0 / 256.0)) //sampling period of the temperature routine
 
 // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
-// E3D V6
-      #define DEFAULT_Kp 50.49
-      #define DEFAULT_Ki 6.29
-      #define DEFAULT_Kd 101.34
-
 // Ultimaker
     #define  DEFAULT_Kp 22.2
-    #define  DEFAULT_Ki 1.08  
-    #define  DEFAULT_Kd 114  
+    #define  DEFAULT_Ki 1.08
+    #define  DEFAULT_Kd 114
 
 // MakerGear
 //    #define  DEFAULT_Kp 7.0
@@ -288,7 +286,7 @@ your extruder heater takes 2 minutes to hit the target on heating.
 //  #define ENDSTOPPULLUP_ZMAX
   #define ENDSTOPPULLUP_XMIN
   #define ENDSTOPPULLUP_YMIN
-  #define ENDSTOPPULLUP_ZMIN
+//#define ENDSTOPPULLUP_ZMIN
 #endif
 
 // The pullups are needed if you directly connect a mechanical endswitch between the signal and ground pins.
@@ -319,7 +317,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 #define DISABLE_E false // For all extruders
 #define DISABLE_INACTIVE_EXTRUDER true //disable only inactive extruders and keep active extruder enabled
 
-#define INVERT_X_DIR false    // for Mendel set to false, for Orca set to true
+#define INVERT_X_DIR true    // for Mendel set to false, for Orca set to true
 #define INVERT_Y_DIR true    // for Mendel set to true, for Orca set to false
 #define INVERT_Z_DIR true     // for Mendel set to false, for Orca set to true
 #define INVERT_E0_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
@@ -336,7 +334,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 #define max_software_endstops true  // If true, axis won't move to coordinates greater than the defined lengths below.
 
 // Travel limits after homing
-#define X_MAX_POS 200
+#define X_MAX_POS 160
 #define X_MIN_POS 0
 #define Y_MAX_POS 200
 #define Y_MIN_POS 0
@@ -374,8 +372,8 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 
     // set the rectangle in which to probe
     #define LEFT_PROBE_BED_POSITION 20
-    #define RIGHT_PROBE_BED_POSITION 160
-    #define BACK_PROBE_BED_POSITION 180
+    #define RIGHT_PROBE_BED_POSITION 120
+    #define BACK_PROBE_BED_POSITION 120
     #define FRONT_PROBE_BED_POSITION 20
 
      // set the number of grid points per dimension
@@ -390,7 +388,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
       #define ABL_PROBE_PT_1_X 15
       #define ABL_PROBE_PT_1_Y 180
       #define ABL_PROBE_PT_2_X 15
-     // #define ABL_PROBE_PT_2_Y 20
+      #define ABL_PROBE_PT_2_Y 20
       #define ABL_PROBE_PT_3_X 170
       #define ABL_PROBE_PT_3_Y 20
 
@@ -400,16 +398,16 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
   // these are the offsets to the probe relative to the extruder tip (Hotend - Probe)
   // X and Y offsets must be integers
   #define X_PROBE_OFFSET_FROM_EXTRUDER -30
-  #define Y_PROBE_OFFSET_FROM_EXTRUDER -0
-  #define Z_PROBE_OFFSET_FROM_EXTRUDER -0
+  #define Y_PROBE_OFFSET_FROM_EXTRUDER 0
+  #define Z_PROBE_OFFSET_FROM_EXTRUDER 0
 
-  #define Z_RAISE_BEFORE_HOMING 2       // (in mm) Raise Z before homing (G28) for Probe Clearance.
+  #define Z_RAISE_BEFORE_HOMING 4       // (in mm) Raise Z before homing (G28) for Probe Clearance.
                                         // Be sure you have this distance over your Z_MAX_POS in case
 
-  #define XY_TRAVEL_SPEED 6000         // X and Y axis travel speed between probes, in mm/min
+  #define XY_TRAVEL_SPEED 8000         // X and Y axis travel speed between probes, in mm/min
 
-  #define Z_RAISE_BEFORE_PROBING 2    //How much the extruder will be raised before traveling to the first probing point.
-  #define Z_RAISE_BETWEEN_PROBINGS 2  //How much the extruder will be raised when traveling from between next probing points
+  #define Z_RAISE_BEFORE_PROBING 15    //How much the extruder will be raised before traveling to the first probing point.
+  #define Z_RAISE_BETWEEN_PROBINGS 5  //How much the extruder will be raised when traveling from between next probing points
 
   //#define Z_PROBE_SLED // turn on if you have a z-probe mounted on a sled like those designed by Charles Bell
   //#define SLED_DOCKING_OFFSET 5 // the extra distance the X axis must travel to pickup the sled. 0 should be fine but you can push it further if you'd like.
@@ -481,7 +479,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 
 // default settings
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {80.21,80.1,4014,315}  // default steps per unit for ultimaker {78.7402,78.7402,200*8/3,760*1.1}920
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,4000,90}  // default steps per unit for ultimaker {78.7402,78.7402,200*8/3,760*1.1}920
 #define DEFAULT_MAX_FEEDRATE          {250, 250, 2, 22}    // (mm/sec)    
 #define DEFAULT_MAX_ACCELERATION      {1000,1000,5,1000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
@@ -691,7 +689,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
     #define LCD_HEIGHT 5
   #else
     #define LCD_WIDTH 16
-    #define LCD_HEIGHT 2    
+    #define LCD_HEIGHT 2
   #endif
   #endif
 #endif
