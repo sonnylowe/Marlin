@@ -44,7 +44,7 @@
 // The following define selects which electronics board you have.
 // Please choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_RAMPS_13_EFB
+  #define MOTHERBOARD BOARD_RAMPS_13_EEB
 #endif
 
 // Define this to set a custom name for your generic Mendel,
@@ -55,7 +55,7 @@
 // #define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
 
 // This defines the number of extruders
-#define EXTRUDERS 1
+#define EXTRUDERS 2
 
 //// The following define selects which power supply you have. Please choose the one that matches your setup
 // 1 = ATX
@@ -105,7 +105,7 @@
 // 110 is Pt100 with 1k pullup (non standard)
 
 #define TEMP_SENSOR_0 5
-#define TEMP_SENSOR_1 0
+#define TEMP_SENSOR_1 5
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_BED 6
 
@@ -130,8 +130,8 @@
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
 // You should use MINTEMP for thermistor short/failure protection.
 #define HEATER_0_MAXTEMP 270
-#define HEATER_1_MAXTEMP 245
-#define HEATER_2_MAXTEMP 245
+#define HEATER_1_MAXTEMP 270
+#define HEATER_2_MAXTEMP 270
 #define BED_MAXTEMP 200
 
 // If your bed has low resistance e.g. .6 ohm and throws the fuse you can duty cycle it to reduce the
@@ -222,34 +222,34 @@
 #define EXTRUDE_MINTEMP 170
 #define EXTRUDE_MAXLENGTH (X_MAX_LENGTH+Y_MAX_LENGTH) //prevent extrusion of very large distances.
 
-/*================== Thermal Runaway Protection ==============================
-This is a feature to protect your printer from burn up in flames if it has
-a thermistor coming off place (this happened to a friend of mine recently and
-motivated me writing this feature).
+//*================== Thermal Runaway Protection ==============================
+//This is a feature to protect your printer from burn up in flames if it has
+//a thermistor coming off place (this happened to a friend of mine recently and
+//motivated me writing this feature).
 
-The issue: If a thermistor come off, it will read a lower temperature than actual.
-The system will turn the heater on forever, burning up the filament and anything
-else around.
+//The issue: If a thermistor come off, it will read a lower temperature than actual.
+//The system will turn the heater on forever, burning up the filament and anything
+//else around.
 
-After the temperature reaches the target for the first time, this feature will 
-start measuring for how long the current temperature stays below the target 
-minus _HYSTERESIS (set_temperature - THERMAL_RUNAWAY_PROTECTION_HYSTERESIS).
+//After the temperature reaches the target for the first time, this feature will 
+//start measuring for how long the current temperature stays below the target 
+//minus _HYSTERESIS (set_temperature - THERMAL_RUNAWAY_PROTECTION_HYSTERESIS).
 
-If it stays longer than _PERIOD, it means the thermistor temperature
-cannot catch up with the target, so something *may be* wrong. Then, to be on the
-safe side, the system will he halt.
+//If it stays longer than _PERIOD, it means the thermistor temperature
+//cannot catch up with the target, so something *may be* wrong. Then, to be on the
+//safe side, the system will he halt.
 
-Bear in mind the count down will just start AFTER the first time the 
-thermistor temperature is over the target, so you will have no problem if
-your extruder heater takes 2 minutes to hit the target on heating.
+//Bear in mind the count down will just start AFTER the first time the 
+//thermistor temperature is over the target, so you will have no problem if
+//your extruder heater takes 2 minutes to hit the target on heating.
 
-*/
+//
 // If you want to enable this feature for all your extruder heaters,
 // uncomment the 2 defines below:
 
-// Parameters for all extruder heaters
-//#define THERMAL_RUNAWAY_PROTECTION_PERIOD 40 //in seconds
-//#define THERMAL_RUNAWAY_PROTECTION_HYSTERESIS 4 // in degree Celsius
+//Parameters for all extruder heaters
+#define THERMAL_RUNAWAY_PROTECTION_PERIOD 40 //in seconds
+#define THERMAL_RUNAWAY_PROTECTION_HYSTERESIS 4 // in degree Celsius
 
 // If you want to enable this feature for your bed heater,
 // uncomment the 2 defines below:
@@ -371,10 +371,10 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
   #ifdef AUTO_BED_LEVELING_GRID
 
     // set the rectangle in which to probe
-    #define LEFT_PROBE_BED_POSITION 45
-    #define RIGHT_PROBE_BED_POSITION 200
-    #define BACK_PROBE_BED_POSITION 160
-    #define FRONT_PROBE_BED_POSITION 10
+    #define LEFT_PROBE_BED_POSITION 50
+    #define RIGHT_PROBE_BED_POSITION 150
+    #define BACK_PROBE_BED_POSITION 150
+    #define FRONT_PROBE_BED_POSITION 50
 
      // set the number of grid points per dimension
      // I wouldn't see a reason to go above 3 (=9 probing points on the bed)
@@ -397,7 +397,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 
   // these are the offsets to the probe relative to the extruder tip (Hotend - Probe)
   // X and Y offsets must be integers
-  #define X_PROBE_OFFSET_FROM_EXTRUDER 40
+  #define X_PROBE_OFFSET_FROM_EXTRUDER 30
   #define Y_PROBE_OFFSET_FROM_EXTRUDER 0
   #define Z_PROBE_OFFSET_FROM_EXTRUDER 0
 
@@ -479,7 +479,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 
 // default settings
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {80.21,80.1,401.4,90}  // default steps per unit for ultimaker {78.7402,78.7402,200*8/3,760*1.1}920
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {80.21,80.1,401.4,330}  // default steps per unit for ultimaker {78.7402,78.7402,200*8/3,760*1.1}920
 #define DEFAULT_MAX_FEEDRATE          {250, 250, 2, 22}    // (mm/sec)    
 #define DEFAULT_MAX_ACCELERATION      {1000,1000,5,1000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
@@ -516,10 +516,10 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 // M501 - reads parameters from EEPROM (if you need reset them after you changed them temporarily).
 // M502 - reverts to the default "factory settings".  You still need to store them in EEPROM afterwards if you want to.
 //define this to enable EEPROM support
-#define EEPROM_SETTINGS
+//#define EEPROM_SETTINGS
 //to disable EEPROM Serial responses and decrease program space by ~1700 byte: comment this out:
 // please keep turned on if you can.
-#define EEPROM_CHITCHAT
+//#define EEPROM_CHITCHAT
 
 // Preheat Constants
 #define PLA_PREHEAT_HOTEND_TEMP 180
